@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router';
-import { FcGoogle } from 'react-icons/fc';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import Lottie from "lottie-react";
 import signUpAnimation from "../../../assets/LottieFiles/signup-animation.json";
+import { AuthContext } from '../../../contexts/AuthContext/AuthContext';
+import SignInWithGoogle from '../components/SignInWithGoogle';
 
 const SignUP = () => {
+
+    const {userSignUp} = useContext(AuthContext);
 
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSignUp = (e) => {
         e.preventDefault();
-    }
 
-    const handleGoogleSignIn = () => {
+        const form = e.target;
+        const name = form.name.value;
+        const photo = form.photo.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(name, photo)
+
+        userSignUp(email, password)
+        .then((userCredential) => {
+            alert('SignUp Success')
+            console.log(userCredential)
+        })
+        .catch((error) => {
+            alert('SignUp Unsuccess')
+            console.log(error)
+        })
     }
 
     return (
@@ -53,8 +70,7 @@ const SignUP = () => {
                             <h4 className="text-gray-600 text-sm">Or</h4>
                             <div className="flex-1 border-t border-gray-400"></div>
                         </div>
-                        <button onClick={handleGoogleSignIn} className="btn btn-outline mt-1">
-                        <FcGoogle className="text-xl" /> Continue with Google</button>
+                        <SignInWithGoogle></SignInWithGoogle>
                     </div>
                 </div>
             </div>
